@@ -25,9 +25,13 @@ class MockBinaryClassifier(BaseEstimator):
         returns self.
 
         :param features:
+            Ignored.
         :param target:
+            Ignored.
         :param sample_weight:
+            Ignored.
         :return:
+            Returns the estimator without any changes.
         """
         return self
 
@@ -61,13 +65,14 @@ predictions = model.predict(test_feature)
 print(predictions)
 
 
-test_target = np.zeros_like(test_feature)
+train_feature = np.zeros_like(test_feature)
+train_target = np.zeros_like(test_feature)
 
 pipe = Pipeline([
     ('scale', MinMaxScaler(feature_range=(0, 1))),
     ('mock', MockBinaryClassifier())
 ])
 
-pipe_predictions = pipe.fit(test_feature, test_target).predict(test_feature)
+pipe_predictions = pipe.fit(train_feature, train_target).predict(test_feature)
 
 print(pipe_predictions)
