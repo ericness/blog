@@ -38,19 +38,17 @@ class MockBinaryClassifier(BaseEstimator):
     def predict(self, features: np.ndarray) -> np.ndarray:
         """
         Emulate a machine learning model's behavior. This function will return
-        the most probable class for each instance.
+        the most probable class for each instance. It only uses the first
+        feature of the `features` array.
 
-        Only looks at first feature.
-
-        If features less than or equal to 0 at a
-        given index, it will return a class 0. If features
-        is greater than zero at a given index, it will return a class 1.
+        If the feature value is less than or equal to 0, it will return a
+        class 0. If feature value is greater than zero, it will return a
+        class 1.
 
         :param features:
             Ndarray that corresponds to features used in a classification model.
         :return:
-            Predicted probabilities for all classes for all instances of
-            features.
+            Predicted class for all instances of `features`.
         """
 
         return np.where(features[:, 0] > 0, 1, 0)
