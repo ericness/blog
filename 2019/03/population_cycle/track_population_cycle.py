@@ -6,7 +6,21 @@ import plotly
 import plotly.plotly as py
 import plotly.graph_objs as go
 
+import standardizer
+
 data = []
+
+
+test_time_series = pd.Series(
+    data=range(20),
+    index=pd.date_range(start=datetime(2018, 1, 1), periods=20)
+)
+print(test_time_series)
+
+result = standardizer.standardize_timeline(test_time_series)
+print(result)
+
+exit()
 
 for i in range(10):
     start_date = datetime(2018, 1, 1) + timedelta(days=int(np.random.rand() * 90))
