@@ -25,11 +25,3 @@ def interpolate_time_series(time_series: pd.Series, n_points: int) -> pd.Series:
         data=spline(interpolation_points),
         index=interpolation_points
     )
-
-test_time_series = pd.Series(
-    data=range(20),
-    index=np.linspace(0, 1, num=20)
-)
-result = interpolate_time_series(test_time_series, n_points=12)
-
-print(result)
