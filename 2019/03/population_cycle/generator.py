@@ -5,7 +5,6 @@ import pandas as pd
 
 
 def generate_time_series(
-    series_id: int,
     start_date: datetime,
     start_date_offset: int,
     end_date_offset: int,
@@ -13,13 +12,11 @@ def generate_time_series(
     value_scale: float,
     noise_scale: float,
     noise_segments: int,
-) -> pd.DataFrame:
+) -> pd.Series:
     """
     Generate a time series of values that ascends, reaches a peak and then
     descends. Noise is also included in the values.
 
-    :param series_id:
-        Id number of the population member the values are for.
     :param start_date:
         Date to start time series.
     :param start_date_offset:
@@ -62,13 +59,8 @@ def generate_time_series(
         np.random.normal(scale=noise_scale, size=noise_segments)) + y_magnitude
     y = y_noise.clip(min=0)
 
-    return pd.DataFrame(
-        data={'value': y},
-        index=pd.MultiIndex.from_product(
-            [
-                pd.date_range(start=series_start_date, end=series_end_date),
-                [series_id]
-            ],
-            names=['date', 'id']
-        )
+    return pd.Series(
+        data=y,
+        index=pd.date_range(start=series_start_date, end=series_end_date),
+        name='date'
     )
