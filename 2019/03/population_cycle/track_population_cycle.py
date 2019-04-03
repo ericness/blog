@@ -1,10 +1,5 @@
 from datetime import datetime
-from datetime import timedelta
-import numpy as np
 import pandas as pd
-import plotly
-import plotly.plotly as py
-import plotly.graph_objs as go
 
 import displayer
 import interpolator
@@ -19,11 +14,11 @@ VALUE_SCALE = 1.5
 NOISE_SCALE = 0.3
 NOISE_SEGMENTS = 12
 
-INTERPOLATION_POINTS = 20
-
+INTERPOLATION_POINTS = 100
 POPULATION_COUNT = 20
+QUANTILES = [0.25, 0.5, 0.75]
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     customer_activity = {}
     for customer_id in range(POPULATION_COUNT):
@@ -35,18 +30,17 @@ if __name__ == '__main__':
             end_date_min_offset=END_DATE_MIN_OFFSET,
             value_scale=VALUE_SCALE,
             noise_scale=NOISE_SCALE,
-            noise_segments=NOISE_SEGMENTS
+            noise_segments=NOISE_SEGMENTS,
         )
 
-    displayer.graph_raw_timelines(customer_activity)
+    displayer.graph_timelines(customer_activity)
 
     customer_activity_std = {
         customer_id: standardizer.standardize_timeline(activity)
         for customer_id, activity in customer_activity.items()
     }
 
-    #trace = go.Scatter(x=df_std.index, y=df_std['value'], name="activity")
-    #data.append(trace)
+    displayer.graph_timelines(customer_activity_std)
 
     customer_activity_int = {
         customer_id: interpolator.interpolate_time_series(
@@ -54,38 +48,11 @@ if __name__ == '__main__':
         )
         for customer_id, activity in customer_activity_std.items()
     }
-    #print(df_int.head())
+
+    displayer.graph_timelines(customer_activity_int)
 
     customer_activity_df = pd.DataFrame(customer_activity_int).T
 
-    print(customer_activity_df.head())
+    interpolated_quantiles = customer_activity_df.quantile(q=QUANTILES, axis=0)
 
-    interpolated_percentiles = (
-        customer_activity_df
-            .quantile(q=[0.25, 0.5, 0.75], axis=0)
-    )
-
-    print(interpolated_percentiles)
-
-    # data = []
-    #
-    # for customer_id, activity in customer_activity_std.items():
-    #
-    #     trace = go.Scatter(
-    #         x=activity.index, y=activity.values, name=str(customer_id)
-    #     )
-    #     data.append(trace)
-    #
-    # plotly.offline.init_notebook_mode(connected=True)
-    # plotly.offline.plot(data)
-
-    data = []
-
-    for pct in [0.25, 0.50, 0.75]:
-        trace = go.Scatter(
-            x=interpolated_percentiles.columns,
-            y=interpolated_percentiles.loc[pct],
-            name=str(pct)
-        )
-        data.append(trace)
-
+    displayer.graph_quantiles(interpolated_quantiles)

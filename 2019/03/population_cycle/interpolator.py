@@ -22,6 +22,5 @@ def interpolate_time_series(time_series: pd.Series, n_points: int) -> pd.Series:
     interpolation_points = np.linspace(0, 1, n_points).round(5)
 
     return pd.Series(
-        data=spline(interpolation_points),
-        index=interpolation_points
+        data=spline(interpolation_points), index=interpolation_points
     )

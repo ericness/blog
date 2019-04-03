@@ -15,7 +15,7 @@ def standardize_timeline(time_series: pd.Series) -> pd.Series:
     """
     datetime_index = time_series.index.tolist()
     epoch_index = np.array([t.timestamp() for t in datetime_index])
-    standardized_index = (
-        MinMaxScaler().fit_transform(epoch_index.reshape(-1, 1))
+    standardized_index = MinMaxScaler().fit_transform(
+        epoch_index.reshape(-1, 1)
     )
     return time_series.set_axis(standardized_index[:, 0], inplace=False)

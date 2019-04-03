@@ -38,14 +38,11 @@ def generate_time_series(
         noise and higher values create more variation.
     :return:
     """
-    series_start_date = (
-        start_date + timedelta(days=int(np.random.rand() * start_date_offset))
+    series_start_date = start_date + timedelta(
+        days=int(np.random.rand() * start_date_offset)
     )
-    series_end_date = (
-        series_start_date
-        + timedelta(
-            days=int(np.random.rand() * end_date_offset) + end_date_min_offset
-        )
+    series_end_date = series_start_date + timedelta(
+        days=int(np.random.rand() * end_date_offset) + end_date_min_offset
     )
     n_days = (series_end_date - series_start_date).days + 1
     X = np.linspace(0, np.pi, num=n_days)
@@ -55,12 +52,18 @@ def generate_time_series(
     skew = skew if np.random.rand() > 0.5 else -skew
     y_skew = np.sin(X - skew * np.sin(X))
     y_magnitude = value_scale * (np.random.rand() + 0.5) * y_skew
-    y_noise = np.interp(X, X_coarse,
-        np.random.normal(scale=noise_scale, size=noise_segments)) + y_magnitude
+    y_noise = (
+        np.interp(
+            X,
+            X_coarse,
+            np.random.normal(scale=noise_scale, size=noise_segments),
+        )
+        + y_magnitude
+    )
     y = y_noise.clip(min=0)
 
     return pd.Series(
         data=y,
         index=pd.date_range(start=series_start_date, end=series_end_date),
-        name='date'
+        name="date",
     )
