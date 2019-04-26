@@ -3,6 +3,8 @@ import pandas as pd
 
 import data_generator
 
+TEST_DATA_SIZE = 10000
+
 
 def append_hierarchy_levels(record: pd.Series) -> pd.Series:
     """
@@ -27,9 +29,9 @@ def append_hierarchy_levels(record: pd.Series) -> pd.Series:
     return updated_ticket
 
 
-records = data_generator.generate_hierarchy_records()
+records = data_generator.generate_hierarchy_records(TEST_DATA_SIZE)
 
-transformed_records = records.copy().apply(
+transformed_records = records.apply(
     append_hierarchy_levels, axis="columns"
 )
 
