@@ -31,8 +31,6 @@ def append_hierarchy_levels(record: pd.Series) -> pd.Series:
 
 records = data_generator.generate_hierarchy_records(TEST_DATA_SIZE)
 
-transformed_records = records.apply(
-    append_hierarchy_levels, axis="columns"
-)
+transformed_records = records.apply(append_hierarchy_levels, axis="columns")
 
 print(transformed_records.head(5).to_string())
