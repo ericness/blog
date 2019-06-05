@@ -2,15 +2,15 @@ import pandas as pd
 
 customers = pd.DataFrame(
     data={
-        'customerId': ['1', '2', '3', '4'],
+        'customer_id': ['1', '2', '3', '4'],
         'customerName': ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
     }
 )
 
 orders = pd.DataFrame(
     data={
-        'orderId': ['100', '101', '102', '103', '104'],
-        'customerId': ['1', '1', '3', '4', '4'],
+        'order_id': ['100', '101', '102', '103', '104'],
+        'customer_id': ['1', '1', '3', '4', '4'],
         'product': [
             'Firebolt',
             'Pewter Cauldron',
@@ -22,4 +22,10 @@ orders = pd.DataFrame(
     }
 )
 
-print(customers.merge(orders, on='customerId', how='left'))
+print(orders.to_string(), '\n')
+print(orders.info(), '\n')
+
+customer_orders = customers.merge(orders, on='customer_id', how='left')
+
+print(customer_orders.to_string(), '\n')
+print(customer_orders.info())
