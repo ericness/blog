@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 
 @app.route('/hello')
-def get(self):
+def get():
     return {'hello': 'world'}
 
 
