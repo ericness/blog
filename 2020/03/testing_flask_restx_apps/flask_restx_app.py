@@ -8,17 +8,16 @@ def create_app():
     api = Api()
 
     with app.app_context():
-        # Initialize globals
         api.init_app(app)
 
-    @api.route('/hello')
+    @api.route("/hello")
     class HelloWorld(Resource):
         def get(self):
-            return {'hello': 'world'}
+            return {"hello": "world"}
 
     return app
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    app.run()
